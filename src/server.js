@@ -17,6 +17,4 @@ const init = async () => {
   console.log(`Server berjalan pada ${server.info.uri}`);
 };
 
-init();
-
 export default init;
