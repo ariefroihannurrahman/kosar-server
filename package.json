@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build --output public",
     "test": "jest --detectOpenHandles",
     "start": "node index.js",
     "dev-start": "nodemon index.js",
