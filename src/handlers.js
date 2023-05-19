@@ -3,7 +3,6 @@
 import connection from './database.js';
 import {nanoid} from 'nanoid';
 
-connection.connect();
 const date = new Date().toDateString('id-ID');
 
 const home = (request, reply)=>{
