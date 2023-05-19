@@ -6,11 +6,8 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 const config = {
-  // port: process.env.NODE_PORT,
-  // host: process.env.NODE_HOST,
-  port: 3000,
-//   host: 'localhost',
-  host: 'kosar-server-k9kj3qadw-ariefroihannurrahman1-gmailcom.vercel.app',
+  port: process.env.NODE_PORT,
+  host: process.env.NODE_HOST,
 };
 
 const init = async () => {
