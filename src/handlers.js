@@ -11,9 +11,14 @@ const home = (request, reply)=>{
   return reply.response('Hello World');
 };
 
-const getEmployee = () => new Promise((resolve, reject) => {
+const getEmployee = (request, reply) => new Promise((resolve, reject) => {
+  const {nip} = request.query;
+  const querynip = `SELECT * FROM employee WHERE nip = ${nip}`;
+  const querydefault = `SELECT * FROM employee`;
+  const query = nip ? (querynip) : (querydefault);
+
   try {
-    connection.query(`SELECT * FROM employee`, function(error, results) {
+    connection.query(query, function(error, results) {
       if (error) reject(error);
       console.log(date + ' : Request GET Employee success code 200');
       resolve({
@@ -27,10 +32,14 @@ const getEmployee = () => new Promise((resolve, reject) => {
   }
 });
 
-
 const getReporting = () => new Promise((resolve, reject) => {
+  const {id} = request.query;
+  const queryid = `SELECT * FROM reporting WHERE id = ${id}`;
+  const querydefault = `SELECT * FROM reporting`;
+  const query = id ? (queryid) : (querydefault);
+
   try {
-    connection.query(`SELECT * FROM reporting`, function(error, results) {
+    connection.query(query, function(error, results) {
       if (error) reject(error);
       console.log(date + ' : Request GET Reporting success code 200');
       resolve({
