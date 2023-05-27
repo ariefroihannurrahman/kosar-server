@@ -34,7 +34,7 @@ const getEmployee = (request, reply) => new Promise((resolve, reject) => {
 
 const getReporting = () => new Promise((resolve, reject) => {
   const {id} = request.query;
-  const queryid = `SELECT * FROM reporting WHERE id = ${id}`;
+  const queryid = `SELECT * FROM reporting WHERE complaint_id = ${id}`;
   const querydefault = `SELECT * FROM reporting`;
   const query = id ? (queryid) : (querydefault);
 
