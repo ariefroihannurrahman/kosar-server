@@ -1,7 +1,6 @@
 /* eslint linebreak-style: ["error", "windows"] */
-
-import connection from './database.js';
-import {nanoid} from 'nanoid';
+import employeeModel from '../models/employee.js';
+import reportingModel from '../models/reporting.js';
 
 const date = new Date().toDateString('id-ID');
 
@@ -11,35 +10,53 @@ const home = (request, reply)=>{
   return reply.response('Hello World');
 };
 
-const getEmployee = (request, reply) => new Promise((resolve, reject) => {
+const getEmployee = (request, reply) => {
   const {nip} = request.query;
-  const querynip = `SELECT * FROM employee WHERE nip = ${nip}`;
-  const querydefault = `SELECT * FROM employee`;
-  const query = nip ? (querynip) : (querydefault);
+  if (nip) {
+    return new Promise((resolve, reject) => {
+      employeeModel.getEmployeeByNIP(nip, (error, result) => {
+        if (error) reject(error);
+        console.log(date + ' : Request GET Employee by NIP success code 200');
+        resolve({
+          status: 'Success',
+          code: 200,
+          data: result,
+        });
+      });
+    });
+  };
 
-  try {
-    connection.query(query, function(error, results) {
+  return new Promise((resolve, reject) => {
+    employeeModel.getAllemployees((error, results) => {
       if (error) reject(error);
-      console.log(date + ' : Request GET Employee success code 200');
+      console.log(date + ' : Request GET Employees success code 200');
       resolve({
         status: 'Success',
         code: 200,
         data: results,
       });
     });
-  } catch (error) {
-    reject(error);
-  }
-});
+  });
+};
 
-const getReporting = () => new Promise((resolve, reject) => {
+const getReporting = (request, reply) => {
   const {id} = request.query;
-  const queryid = `SELECT * FROM reporting WHERE complaint_id = ${id}`;
-  const querydefault = `SELECT * FROM reporting`;
-  const query = id ? (queryid) : (querydefault);
+  if (id) {
+    return new Promise((resolve, reject) => {
+      reportingModel.getReportingByID(id, (error, result) => {
+        if (error) reject(error);
+        console.log(date + ' : Request GET Reporting by ID success code 200');
+        resolve({
+          status: 'Success',
+          code: 200,
+          data: result,
+        });
+      });
+    });
+  };
 
-  try {
-    connection.query(query, function(error, results) {
+  return new Promise((resolve, reject) => {
+    reportingModel.getAllReporting((error, results) => {
       if (error) reject(error);
       console.log(date + ' : Request GET Reporting success code 200');
       resolve({
@@ -48,227 +65,119 @@ const getReporting = () => new Promise((resolve, reject) => {
         data: results,
       });
     });
-  } catch (error) {
-    reject(error);
-  }
-});
+  });
+};
 
 const createEmployee = (request, reply) => {
-  new Promise((resolve, reject) => {
-    const EmployeeDetail = request.payload;
-
-    const query = `
-    INSERT INTO employee (
-      employee_number,
-      nip,
-      name,
-      position,
-      status,
-      username,
-      password
-    )
-    VALUES (
-      NULL,
-      '${EmployeeDetail.nip}',
-      '${EmployeeDetail.name}',
-      '${EmployeeDetail.position}',
-      '${EmployeeDetail.status}',
-      '${EmployeeDetail.username}',
-      '${EmployeeDetail.password}');
-    `;
-
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request POST Employee success code 201');
-        resolve({
-          status: 'Success',
-          code: 201,
-          data: results,
-        });
+  const employee = request.payload;
+  return new Promise((resolve, reject) => {
+    employeeModel.createEmployee(employee, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request POST Employee success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('POST Employee success');
 };
 
 const createReporting = (request, reply) => {
-  new Promise((resolve, reject) => {
-    const reportingDetail = request.payload;
-
-    const query = `
-    INSERT INTO reporting (
-      complaint_number,
-      complaint_id,
-      complainants_name,
-      complaint_date,
-      description,
-      work_status,
-      vote
-    ) 
-    VALUES (
-      NULL,
-      '${nanoid(25)}',
-      '${reportingDetail.complainants_name}', 
-      '${reportingDetail.complaint_date}', 
-      '${reportingDetail.description}',
-      '${reportingDetail.work_status}', 
-      '${reportingDetail.vote}');
-    `;
-
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request POST Reporting success code 201');
-        resolve({
-          status: 'Success',
-          code: 201,
-          data: results,
-        });
+  return new Promise((resolve, reject) => {
+    const detail = request.payload;
+    reportingModel.createReporting(detail, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request POST Reporting success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('POST Reporting success');
 };
 
 const updateEmployee = (request, reply) => {
-  const params = request.query;
+  const {nip} = request.query;
   const update = request.payload;
 
-  const query = `
-    UPDATE employee 
-    SET name = '${update.name}',
-    position = '${update.position}',
-    status = '${update.status}',
-    username = '${update.username}',
-    password = '${update.password}'
-    WHERE nip = ${params.nip};
-  `;
-
-  new Promise((resolve, reject)=>{
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request PUT Employee success code 201');
-        resolve({
-          status: 'Success',
-          code: 201,
-          data: results,
-        });
+  return new Promise((resolve, reject)=>{
+    employeeModel.updateEmployee(nip, update, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request PUT Employee success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('Update Employee success');
 };
 
 const updateReporting = (request, reply) => {
-  const params = request.query;
+  const {id} = request.query;
   const update = request.payload;
 
-  const query = `
-    UPDATE reporting 
-    SET complainants_name = '${update.complainants_name}', 
-    complaint_date = '${update.complaint_date}', 
-    work_status = '${update.work_status}', 
-    vote = '${update.vote}' 
-    WHERE complaint_id = ${params.id};
-  `;
-
-  new Promise((resolve, reject)=>{
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request Update Reporting success code 201');
-        resolve({
-          status: 'Success',
-          code: 201,
-          data: results,
-        });
+  return new Promise((resolve, reject)=>{
+    reportingModel.updateReporting(id, update, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request PUT Reporting success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('Update Reporting success');
 };
 
 const deleteEmployee = (request, reply) => {
-  const params = request.query;
-  const query = `DELETE FROM employee WHERE nip = ${params.nip}`;
+  const {nip} = request.query;
 
-  new Promise((resolve, reject) => {
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request Delete Employee success code 202');
-        resolve({
-          status: 'Success',
-          code: 202,
-          data: results,
-        });
+  return new Promise((resolve, reject) => {
+    employeeModel.deleteEmployee(nip, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request DELETE Employee success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('Delete Employee success');
 };
 
 const deleteReporting = (request, reply) => {
-  const params = request.query;
-  const query = `DELETE FROM reporting WHERE complaint_id = ${params.id}`;
+  const {id} = request.query;
 
-  new Promise((resolve, reject) => {
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        console.log(date + ' : Request Delete Reporting success code 202');
-        resolve({
-          status: 'Success',
-          code: 202,
-          data: results,
-        });
+  return new Promise((resolve, reject) => {
+    reportingModel.deleteReporting(id, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request DELETE Reporting success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
-
-  return reply.response('Delete Reporting success');
 };
 
-const upVote = (request, reply) => {
-  const data = request.payload;
-  const query = `
-    UPDATE reporting 
-    SET vote = ${data.vote} 
-    WHERE complaint_id = ${data.id}
-  `;
+const vote = (request, reply) => {
+  const {vote} = request.payload;
+  const {id} = request.query;
 
-  new Promise((resolve, reject) => {
-    try {
-      connection.query(query, function(error, results) {
-        if (error) reject(error);
-        resolve({
-          status: 'Success',
-          code: 201,
-          data: results,
-        });
+  return new Promise((resolve, reject) => {
+    reportingModel.vote(id, vote, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request PUT Reporting vote success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
       });
-    } catch {
-      reject(error);
-    }
+    });
   });
 };
 
@@ -282,5 +191,5 @@ export {
   updateReporting,
   deleteEmployee,
   deleteReporting,
-  upVote,
+  vote,
 };

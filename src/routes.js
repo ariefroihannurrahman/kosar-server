@@ -1,69 +1,56 @@
 /* eslint linebreak-style: ["error", "windows"] */
-
-import {
-  home,
-  getEmployee,
-  getReporting,
-  createReporting,
-  createEmployee,
-  updateEmployee,
-  updateReporting,
-  deleteEmployee,
-  deleteReporting,
-  upVote,
-} from './handlers.js';
-// import {nanoid} from 'nanoid';
+import * as handler from './handlers.js';
 
 const routes = [
   {
     path: '/',
     method: 'GET',
-    handler: home,
+    handler: handler.home,
   },
   {
     path: '/employee',
     method: 'GET',
-    handler: getEmployee,
+    handler: handler.getEmployee,
   },
   {
     path: '/reporting',
     method: 'GET',
-    handler: getReporting,
+    handler: handler.getReporting,
   },
   {
     path: '/c/emp',
     method: 'POST',
-    handler: createEmployee,
+    handler: handler.createEmployee,
   },
   {
     path: '/c/rep',
     method: 'POST',
-    handler: createReporting,
+    handler: handler.createReporting,
   },
   {
     path: '/u/emp',
     method: 'PUT',
-    handler: updateEmployee,
+    handler: handler.updateEmployee,
   },
   {
     path: '/u/rep',
     method: 'PUT',
-    handler: updateReporting,
+    handler: handler.updateReporting,
   },
   {
     path: '/d/emp',
     method: 'DELETE',
-    handler: deleteEmployee,
+    handler: handler.deleteEmployee,
   },
   {
     path: '/d/rep',
     method: 'DELETE',
-    handler: deleteReporting,
+    handler: handler.deleteReporting,
   },
   {
-    path: '/u/rep/upvote',
+    path: '/u/rep/vote',
     method: 'PUT',
-    handler: upVote,
+    handler: handler.vote,
   },
 ];
 
