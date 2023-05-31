@@ -9,11 +9,7 @@ const config = {
   port: process.env.NODE_PORT,
   host: process.env.NODE_HOST,
   routes: {
-    'cors': {
-      'origin': ['https://kosar-client.vercel.app/'],
-      'headers': ['Accept', 'Content-Type'],
-      'additionalHeaders': ['X-Requested-With'],
-    },
+    'cors': true,
   },
 };
 
