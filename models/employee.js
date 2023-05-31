@@ -85,4 +85,20 @@ employeeModel.deleteEmployee = (nip, callback) => {
   });
 };
 
+// Tambahanz
+
+employeeModel.loginEmployee = (username, password, callback) => {
+  const query = `
+    SELECT * FROM employee
+    WHERE username = ? AND password = ? ;
+  `;
+  connection.query(query, [username, password], (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 export default employeeModel;

@@ -47,10 +47,36 @@ const routes = [
     method: 'DELETE',
     handler: handler.deleteReporting,
   },
+  // Tambahan
+  {
+    path: '/u/rep/reason',
+    method: 'PUT',
+    handler: handler.updateReportingReason,
+  },
   {
     path: '/u/rep/vote',
     method: 'PUT',
     handler: handler.vote,
+  },
+  {
+    path: '/l/emp',
+    method: 'POST',
+    handler: handler.loginEmployee,
+  },
+  {
+    path: '/verify',
+    method: 'GET',
+    handler: handler.getCode,
+  },
+  {
+    path: '/c/veriy',
+    method: 'POST',
+    handler: handler.createCode,
+  },
+  {
+    path: '/s/verify',
+    method: 'POST',
+    handler: handler.sendCode,
   },
 ];
 

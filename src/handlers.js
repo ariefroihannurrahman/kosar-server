@@ -1,10 +1,11 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import employeeModel from '../models/employee.js';
 import reportingModel from '../models/reporting.js';
+import verificationModel from '../models/verification.js';
 
 const date = new Date().toDateString('id-ID');
 
-const home = (request, reply)=>{
+const home = (request, reply) => {
   const date = new Date().toDateString('id-ID');
   console.log(date + ' : Request success code 200');
   return reply.response('Hello World');
@@ -24,7 +25,7 @@ const getEmployee = (request, reply) => {
         });
       });
     });
-  };
+  }
 
   return new Promise((resolve, reject) => {
     employeeModel.getAllemployees((error, results) => {
@@ -53,7 +54,7 @@ const getReporting = (request, reply) => {
         });
       });
     });
-  };
+  }
 
   return new Promise((resolve, reject) => {
     reportingModel.getAllReporting((error, results) => {
@@ -102,7 +103,7 @@ const updateEmployee = (request, reply) => {
   const {nip} = request.query;
   const update = request.payload;
 
-  return new Promise((resolve, reject)=>{
+  return new Promise((resolve, reject) => {
     employeeModel.updateEmployee(nip, update, (error, results) => {
       if (error) reject(error);
       console.log(date + ' : Request PUT Employee success code 201');
@@ -119,7 +120,7 @@ const updateReporting = (request, reply) => {
   const {id} = request.query;
   const update = request.payload;
 
-  return new Promise((resolve, reject)=>{
+  return new Promise((resolve, reject) => {
     reportingModel.updateReporting(id, update, (error, results) => {
       if (error) reject(error);
       console.log(date + ' : Request PUT Reporting success code 201');
@@ -164,6 +165,25 @@ const deleteReporting = (request, reply) => {
   });
 };
 
+const updateReportingReason = (request, reply) => {
+  const {id} = request.query;
+  const {reason} = request.payload;
+
+  return new Promise((resolve, reject) => {
+    reportingModel.updateReportingReason(id, reason, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request PUT Reporting Reason success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
+      });
+    });
+  });
+};
+
+// Tambahan
+
 const vote = (request, reply) => {
   const {vote} = request.payload;
   const {id} = request.query;
@@ -181,6 +201,102 @@ const vote = (request, reply) => {
   });
 };
 
+const loginEmployee = (request, reply) => {
+  const {username, password} = request.payload;
+
+  return new Promise((resolve, reject) => {
+    employeeModel.loginEmployee(username, password, (error, results) => {
+      if (error) {
+        console.log(date + ' : Request POST Login Employee error', error);
+        reject(error);
+      }
+
+      if (results.length > 0) {
+        console.log(date + ' : Request POST Login Employee success code 200');
+        resolve({
+          status: 'Success',
+          code: 200,
+          message: 'Login successful',
+          position: results[0].position,
+        });
+      } else {
+        console.log(date + ' : Request POST Login Employee failed code 401');
+        reject({
+          status: 'Unauthorized',
+          code: 401,
+          message: 'Invalid username or password',
+        });
+      }
+    });
+  });
+};
+
+const getCode = (request, reply) => {
+  return new Promise((resolve, reject) => {
+    verificationModel.getCode((error, results) => {
+      if (error) {
+        console.log('Error while fetching kode:', error);
+        reject(error);
+      }
+      resolve({
+        status: 'Success',
+        code: 200,
+        data: results,
+      });
+    });
+  });
+};
+
+const createCode = (request, reply) => {
+  const {code} = request.payload;
+
+  return new Promise((resolve, reject) => {
+    verificationModel.createCode(code, (error, result) => {
+      if (error) {
+        console.log('Error while creating kode:', error);
+        reject(error);
+      }
+      resolve({
+        status: 'Success',
+        code: 201,
+        message: 'Kode created successfully',
+        data: result,
+      });
+    });
+  });
+};
+
+
+const sendCode = (request, reply) => {
+  const {code} = request.payload;
+
+  return new Promise((resolve, reject) => {
+    verificationModel.getCode((error, results) => {
+      if (error) {
+        console.log('Error while fetching kode:', error);
+        reject(error);
+      }
+
+      const matchingCode = results.find((result) => result.code === code);
+      if (matchingCode) {
+        console.log(`Sending code ${code} to the user`);
+        resolve({
+          status: 'Success',
+          code: 200,
+          message: 'Code sent successfully',
+        });
+      } else {
+        reject({
+          status: 'Error',
+          code: 404,
+          message: 'Invalid code',
+        });
+      }
+    });
+  });
+};
+
+
 export {
   home,
   getEmployee,
@@ -191,5 +307,12 @@ export {
   updateReporting,
   deleteEmployee,
   deleteReporting,
+
+  // Tambahan
+  updateReportingReason,
   vote,
+  loginEmployee,
+  getCode,
+  createCode,
+  sendCode,
 };

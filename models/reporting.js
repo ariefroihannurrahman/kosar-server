@@ -27,8 +27,11 @@ reportingModel.getReportingByID = (id, callback) => {
   });
 };
 
+// Tambahan
 reportingModel.createReporting = (detail, callback) => {
   const saveDate = date.split('/');
+  const workStatus = 'Pending';
+
   const query = `
   INSERT INTO reporting (
     updatedAt, 
@@ -52,7 +55,7 @@ reportingModel.createReporting = (detail, callback) => {
         '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
         '${detail.complaint_category}', 
         '${detail.description}', 
-        '${detail.work_status}', 
+        '${workStatus}',  
         '0'
         );
     `;
@@ -66,15 +69,26 @@ reportingModel.createReporting = (detail, callback) => {
   });
 };
 
+
+// Tambahan
 reportingModel.updateReporting = (id, update, callback) => {
   const saveDate = date.split('/');
-  const query = `
+  let query = `
     UPDATE reporting 
     SET updatedAt = '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}',
-    description = '${update.description}', 
-    work_status = '${update.work_status}'
+    work_status = '${update.work_status || 'Diterima' || 'Selesai'}'
     WHERE complaint_id = '${id}';
   `;
+
+  if (update.work_status === 'Ditolak') {
+    query = `
+      UPDATE reporting 
+      SET updatedAt = '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}',
+      reason = '${update.reason}', 
+      work_status = '${update.work_status}'
+      WHERE complaint_id = '${id}';
+    `;
+  }
 
   connection.query(query, (error, results) => {
     if (error) {
@@ -96,6 +110,24 @@ reportingModel.deleteReporting = (id, callback) => {
   });
 };
 
+// Tambahan
+reportingModel.updateReportingReason = (id, reason, callback) => {
+  const query = `
+    UPDATE reporting 
+    SET reason = '${reason}' 
+    WHERE complaint_id = '${id}';
+  `;
+
+  connection.query(query, (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+// Tambahan
 reportingModel.vote = (id, vote, callback) => {
   const query = `
     UPDATE reporting 
@@ -108,7 +140,7 @@ reportingModel.vote = (id, vote, callback) => {
       callback(error, null);
     } else {
       callback(null, results);
-    };
+    }
   });
 };
 
