@@ -7,10 +7,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 const config = {
   port: process.env.NODE_PORT,
-  host: process.env.NODE_HOST,
-  routes: {
-    'cors': true,
-  },
+  host: process.env.NODE_HOST
 };
 
 const init = async () => {
