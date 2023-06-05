@@ -87,6 +87,7 @@ const createEmployee = (request, reply) => {
 const createReporting = (request, reply) => {
   return new Promise((resolve, reject) => {
     const detail = request.payload;
+    console.log(detail);
     reportingModel.createReporting(detail, (error, results) => {
       if (error) reject(error);
       console.log(date + ' : Request POST Reporting success code 201');
