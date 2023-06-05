@@ -219,14 +219,15 @@ const loginEmployee = (request, reply) => {
           message: 'Login successful',
           position: results[0].position,
         });
-      } else {
-        console.log(date + ' : Request POST Login Employee failed code 401');
-        reject({
-          status: 'Unauthorized',
-          code: 401,
-          message: 'Invalid username or password',
-        });
       }
+      // else {
+      //   console.log(date + ' : Request POST Login Employee failed code 401');
+      //   reject({
+      //     status: 'Unauthorized',
+      //     code: 401,
+      //     message: 'Invalid username or password',
+      //   });
+      // }
     });
   });
 };
@@ -285,13 +286,14 @@ const sendCode = (request, reply) => {
           code: 200,
           message: 'Code sent successfully',
         });
-      } else {
-        reject({
-          status: 'Error',
-          code: 404,
-          message: 'Invalid code',
-        });
       }
+      // else {
+      //   reject({
+      //     status: 'Error',
+      //     code: 404,
+      //     message: 'Invalid code',
+      //   });
+      // }
     });
   });
 };
