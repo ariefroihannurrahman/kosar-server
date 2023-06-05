@@ -48,7 +48,7 @@ reportingModel.createReporting = (detail, callback) => {
       '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
       '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
       NULL, 
-      '${v4(25)}', 
+      '${v4()}', 
       '${detail.complainants_name}', 
       '${detail.complaint_title}', 
       '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
