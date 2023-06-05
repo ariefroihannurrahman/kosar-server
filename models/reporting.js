@@ -30,8 +30,6 @@ reportingModel.getReportingByID = (id, callback) => {
 // Tambahan
 reportingModel.createReporting = (detail, callback) => {
   const saveDate = date.split('/');
-  const workStatus = 'Pending';
-
   const query = `
   INSERT INTO reporting (
     updatedAt, 
@@ -55,7 +53,7 @@ reportingModel.createReporting = (detail, callback) => {
         '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
         '${detail.complaint_category}', 
         '${detail.description}', 
-        '${workStatus}',  
+        '${detail.work_status}',  
         '0'
         );
     `;
