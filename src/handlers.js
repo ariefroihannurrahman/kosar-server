@@ -89,6 +89,8 @@ const createReporting = (request, reply) => {
     const detail = request.payload;
     console.log(detail);
     reportingModel.createReporting(detail, (error, results) => {
+      console.log(results);
+      console.log(error);
       if (error) reject(error);
       console.log(date + ' : Request POST Reporting success code 201');
       resolve({

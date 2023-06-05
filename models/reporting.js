@@ -31,32 +31,34 @@ reportingModel.getReportingByID = (id, callback) => {
 reportingModel.createReporting = (detail, callback) => {
   const saveDate = date.split('/');
   const query = `
-  INSERT INTO reporting (
-    updatedAt, 
-    createdAt, 
-    complaint_number, 
-    complaint_id, 
-    complainants_name, 
-    complaint_title, 
-    complaint_date, 
-    complaint_category, 
-    description, 
-    work_status, 
-    vote
+    INSERT INTO reporting (
+      updatedAt, 
+      createdAt, 
+      complaint_number, 
+      complaint_id, 
+      complainants_name, 
+      complaint_title, 
+      complaint_date, 
+      complaint_category, 
+      description, 
+      work_status, 
+      reason, 
+      vote
     ) VALUES (
-        '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
-        '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
-        NULL, 
-        '${v4()}', 
-        '${detail.complainants_name}', 
-        '${detail.complaint_title}', 
-        '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
-        '${detail.complaint_category}', 
-        '${detail.description}', 
-        '${detail.work_status}',  
-        '0'
-        );
-    `;
+      '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
+      '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
+      NULL, 
+      '${v4()}', 
+      '${detail.complainants_name}', 
+      '${detail.complaint_title}', 
+      '${saveDate[2]}-${saveDate[1]}-${saveDate[0]}', 
+      '${detail.complaint_category}', 
+      '${detail.description}', 
+      '${detail.work_status}', 
+      '', 
+      '0'
+    );
+  `;
 
   connection.query(query, (error, results) => {
     if (error) {
