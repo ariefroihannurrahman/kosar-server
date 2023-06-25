@@ -364,10 +364,10 @@ const loginUser = (request, reply) => {
           status: 'Success',
           code: 200,
           message: 'Login successful',
-          userId,
-          email,
-          name,
-          accountState,
+          user_id: userId,
+          email: email,
+          name: name,
+          account_state: accountState,
         });
       }
     });
