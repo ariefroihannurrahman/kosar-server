@@ -414,7 +414,7 @@ const deleteUser = (request, reply) => {
   const {nik} = request.query;
 
   return new Promise((resolve, reject) => {
-    userModel.deleteSser(nik, (error, results) => {
+    userModel.deleteUser(nik, (error, results) => {
       if (error) reject(error);
       console.log(date + ' : Request DELETE user success code 201');
       resolve({
