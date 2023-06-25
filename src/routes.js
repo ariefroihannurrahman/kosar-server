@@ -110,6 +110,11 @@ const routes = [
     method: 'PUT',
     handler: handler.updateUser,
   },
+  {
+    path: '/d/user',
+    method: 'DELETE',
+    handler: handler.deleteUser,
+  },
 ];
 
 export default routes;

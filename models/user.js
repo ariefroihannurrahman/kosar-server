@@ -105,4 +105,15 @@ userModel.getUsersByUserId = (userId, callback) => {
   });
 };
 
+userModel.deleteUser = (nik, callback) => {
+  const query = `DELETE FROM user WHERE nik = ?`;
+  connection.query(query, nik, (error, results) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 export default userModel;

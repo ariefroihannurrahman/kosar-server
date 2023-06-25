@@ -410,6 +410,22 @@ const getReportingByUserId = (request, reply) => {
   }
 };
 
+const deleteUser = (request, reply) => {
+  const {nik} = request.query;
+
+  return new Promise((resolve, reject) => {
+    userModel.deleteSser(nik, (error, results) => {
+      if (error) reject(error);
+      console.log(date + ' : Request DELETE user success code 201');
+      resolve({
+        status: 'Success',
+        code: 201,
+        data: results,
+      });
+    });
+  });
+};
+
 export {
   home,
   getEmployee,
@@ -436,4 +452,5 @@ export {
   getUsersByUserId,
   getReportingByUserId,
   updateUser,
+  deleteUser,
 };
