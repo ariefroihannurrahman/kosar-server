@@ -1,5 +1,5 @@
 /* eslint linebreak-style: ["error", "windows"] */
-import connection from "../src/database.js";
+import connection from '../src/database.js';
 
 const employeeModel = {};
 
@@ -75,7 +75,7 @@ employeeModel.updateEmployee = (nip, update, callback) => {
 };
 
 employeeModel.deleteEmployee = (nip, callback) => {
-  const query = "DELETE FROM employee WHERE nip = ?";
+  const query = 'DELETE FROM employee WHERE nip = ?';
   connection.query(query, nip, (error, result) => {
     if (error) {
       callback(error, null);
@@ -85,7 +85,7 @@ employeeModel.deleteEmployee = (nip, callback) => {
   });
 };
 
-//Tambahanz
+// Tambahanz
 
 employeeModel.loginEmployee = (username, password, callback) => {
   const query = `

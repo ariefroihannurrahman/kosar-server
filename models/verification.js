@@ -1,4 +1,5 @@
-import connection from "../src/database.js";
+/* eslint linebreak-style: ["error", "windows"] */
+import connection from '../src/database.js';
 
 const verificationModel = {};
 
