@@ -268,7 +268,9 @@ const sendCode = (request, reply) => {
         console.log('Error while fetching kode:', error);
         reject(error);
       }
-      const matchingCode = results.find((result) => result.code == code);
+      console.log(results[0]);
+      const matchingCode = results.find((results) => results.code === code);
+      console.log(matchingCode);
       if (matchingCode) {
         console.log(`Sending code ${code} to the user`);
 

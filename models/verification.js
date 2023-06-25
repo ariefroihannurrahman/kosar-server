@@ -20,10 +20,15 @@ verificationModel.createCode = (code, callback) => {
     VALUES ('${code}');
   `;
 
+  console.log(query);
+
   connection.query(query, (error, result) => {
+    console.log(query);
     if (error) {
+      console.log(error);
       callback(error, null);
     } else {
+      console.log(result);
       callback(null, result);
     }
   });
