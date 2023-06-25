@@ -359,15 +359,14 @@ const loginUser = (request, reply) => {
 
       if (results.length > 0) {
         console.log(date + ' : Request POST Login User success code 200');
-        const {userId, email, name, accountState} = results[0];
         resolve({
           status: 'Success',
           code: 200,
           message: 'Login successful',
-          user_id: userId,
-          email: email,
-          name: name,
-          account_state: accountState,
+          user_id: results[0].user_id,
+          email: results[0].email,
+          name: results[0].name,
+          account_state: results[0].account_state,
         });
       }
     });
